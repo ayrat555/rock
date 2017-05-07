@@ -1,5 +1,14 @@
-defmodule Rock.NeighborMatrix do
+defmodule Rock.Neighbours do
   alias Rock.JaccardCoefficient
+
+  def list(points,
+      theta,
+      similarity_function \\ &JaccardCoefficient.measure/2)
+      when is_list(points) do
+    points
+    |> matrix(theta, similarity_function)
+    |> index_list
+  end
 
   def matrix(points,
       theta,
@@ -12,6 +21,20 @@ defmodule Rock.NeighborMatrix do
     points
     |> lower_triangle_matrix(similarity_function)
     |> copy_to_upper_triangle
+  end
+
+  defp index_list(matrix) do
+    matrix
+    |> Enum.map(fn(row) ->
+      row
+      |> Enum.with_index
+      |> Enum.filter(fn({el, _index}) ->
+        el != 0
+      end)
+      |> Enum.map(fn({_el, index}) ->
+        index
+      end)
+    end)
   end
 
   defp lower_triangle_matrix(points, similarity_function) do
