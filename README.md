@@ -1,4 +1,5 @@
 # Rock
+[![Build Status](https://semaphoreci.com/api/v1/ayrat555/rock/branches/master/badge.svg)](https://semaphoreci.com/ayrat555/rock)
 
 ROCK: A Robust Clustering Algorithm for Categorical Attributes
 
