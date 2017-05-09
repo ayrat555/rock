@@ -50,7 +50,7 @@ defmodule Rock.Neighbours do
   end
 
   defp neighbors?(point1, point2, similarity_function, theta) do
-    if similarity_function.(point1, point2) > theta, do: 1, else: 0
+    if similarity_function.(point1, point2) >= theta, do: 1, else: 0
   end
 
   defp copy_to_upper_triangle(lower_neighbor_matrix) do
