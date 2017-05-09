@@ -1,19 +1,11 @@
 defmodule Rock.Neighbours do
-  alias Rock.JaccardCoefficient
-
-  def list(points,
-      theta,
-      similarity_function \\ &JaccardCoefficient.measure/2)
-      when is_list(points) do
+  def list(points, theta, similarity_function) when is_list(points) do
     points
     |> matrix(theta, similarity_function)
     |> index_list
   end
 
-  def matrix(points,
-      theta,
-      similarity_function \\ &JaccardCoefficient.measure/2)
-      when is_list(points) do
+  def matrix(points, theta, similarity_function) when is_list(points) do
     similarity_function = fn(point1, point2) ->
       neighbors?(point1, point2, similarity_function, theta)
     end
