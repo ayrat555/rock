@@ -1,7 +1,13 @@
 defmodule Rock.Struct.Point do
-  defstruct attributes: []
+  defstruct attributes: [], name: nil, index: nil
 
   alias Rock.Struct.Point
+
+  def new(name, attributes, index) when is_list(attributes) do
+    attributes = MapSet.new(attributes)
+
+    %Point{attributes: attributes, name: name, index: index}
+  end
 
   def new(attributes) when is_list(attributes) do
     attributes = MapSet.new(attributes)
