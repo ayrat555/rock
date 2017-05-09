@@ -2,7 +2,7 @@ defmodule Rock.NeighboursTest do
   use ExUnit.Case
   alias Rock.Struct.Point
   alias Rock.Neighbours
-  alias Rock.JaccardCoefficient
+  alias Rock.NeighbourCriterion
 
   @points [
     Point.new(["1", "2", "3", "4", "5"]),
@@ -11,9 +11,11 @@ defmodule Rock.NeighboursTest do
   ]
 
   test "calculates neighbor matrix with jaccard coefficient" do
+    criterion = NeighbourCriterion.new(0.1)
+
     neighbor_matrix =
       @points
-      |> Neighbours.matrix(0.1, &JaccardCoefficient.measure/2)
+      |> Neighbours.matrix(criterion)
 
     ^neighbor_matrix = [
       [1, 1, 1],
@@ -28,9 +30,10 @@ defmodule Rock.NeighboursTest do
         %Point{attributes: attributes2}) ->
       Enum.count(attributes1) * Enum.count(attributes2)
     end
+    criterion = NeighbourCriterion.new(10, similarity_function)
     neighbor_matrix =
       @points
-      |> Neighbours.matrix(10, similarity_function)
+      |> Neighbours.matrix(criterion)
 
     ^neighbor_matrix = [
       [1, 0, 1],
@@ -40,9 +43,10 @@ defmodule Rock.NeighboursTest do
   end
 
   test "returns neighbor indices list" do
+    criterion = NeighbourCriterion.new(0.1)
     neighbor_list =
       @points
-      |> Neighbours.list(0.1, &JaccardCoefficient.measure/2)
+      |> Neighbours.list(criterion)
 
     ^neighbor_list = [
       [0, 1, 2],

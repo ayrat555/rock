@@ -1,17 +1,13 @@
 defmodule Rock.Neighbours do
-  def list(points, theta, similarity_function) when is_list(points) do
+  def list(points, neighbour_criterion) when is_list(points) do
     points
-    |> matrix(theta, similarity_function)
+    |> matrix(neighbour_criterion)
     |> index_list
   end
 
-  def matrix(points, theta, similarity_function) when is_list(points) do
-    similarity_function = fn(point1, point2) ->
-      neighbors?(point1, point2, similarity_function, theta)
-    end
-
+  def matrix(points, neighbour_criterion) when is_list(points) do
     points
-    |> lower_triangle_matrix(similarity_function)
+    |> lower_triangle_matrix(neighbour_criterion)
     |> copy_to_upper_triangle
   end
 
@@ -29,11 +25,11 @@ defmodule Rock.Neighbours do
     end)
   end
 
-  defp lower_triangle_matrix(points, similarity_function) do
+  defp lower_triangle_matrix(points, neighbour_criterion) do
     points
     |> Enum.with_index
     |> Enum.map(fn({point1, row_index}) ->
-      lower_triangle_row(point1, row_index, points, similarity_function)
+      lower_triangle_row(point1, row_index, points, neighbour_criterion)
     end)
   end
 

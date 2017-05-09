@@ -2,8 +2,10 @@ defmodule Rock.LinksTest do
   use ExUnit.Case
   alias Rock.Links
   alias Rock.Struct.Point
+  alias Rock.NeighbourCriterion
 
   test "calculates link matrix (example 1)" do
+    criterion = NeighbourCriterion.new(0.1)
     points = [
       Point.new(["1", "2", "3", "4", "5"]),
       Point.new(["1"]),
@@ -11,7 +13,7 @@ defmodule Rock.LinksTest do
     ]
     link_matrix =
       points
-      |> Links.matrix(0.1)
+      |> Links.matrix(criterion)
 
     ^link_matrix =
       [
@@ -22,6 +24,7 @@ defmodule Rock.LinksTest do
   end
 
   test "calculates link matrix (example 2)" do
+    criterion = NeighbourCriterion.new(0.5)
     points = [
       Point.new(["1", "2", "3"]),
       Point.new(["1", "2", "4"]),
@@ -41,7 +44,7 @@ defmodule Rock.LinksTest do
 
     link_matrix =
       points
-      |> Links.matrix(0.5)
+      |> Links.matrix(criterion)
 
     ^link_matrix = [
        [0, 7, 7, 5, 5, 4, 5, 5, 4, 4, 5, 5, 2, 2],
@@ -62,6 +65,7 @@ defmodule Rock.LinksTest do
   end
 
   test "calculates link matrix (example 3)" do
+    criterion = NeighbourCriterion.new(0.2)
     points = [
       Point.new(["1"]),
       Point.new(["2", "3", "4", "5"]),
@@ -71,7 +75,7 @@ defmodule Rock.LinksTest do
 
     link_matrix =
       points
-      |> Links.matrix(0.2)
+      |> Links.matrix(criterion)
 
     ^link_matrix = [
       [0, 0, 0, 0],
