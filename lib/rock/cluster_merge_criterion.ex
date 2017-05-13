@@ -13,7 +13,7 @@ defmodule Rock.ClusterMergeCriterion do
       second_cluster_points,
       count) do
 
-    count + count_cross_links(link_matrix, point1, second_cluster_points, count)
+    count_cross_links(link_matrix, point1, second_cluster_points, count)
   end
 
   def count_cross_links(link_matrix,

@@ -31,47 +31,47 @@ defmodule Rock.ClusterMergeCriterionTest do
   end
 
 
-  # test "counts number of cross links (example 2)" do
-  #   points = [
-  #     {"point1", ["1", "2", "3"]},
-  #     {"point2", ["1", "2", "4"]},
-  #     {"point3", ["1", "2", "5"]},
-  #     {"point4", ["1", "3", "4"]},
-  #     {"point5", ["1", "3", "5"]},
-  #     {"point6", ["1", "4", "5"]},
-  #     {"point7", ["2", "3", "4"]},
-  #     {"point8", ["2", "3", "5"]},
-  #     {"point9", ["2", "4", "5"]},
-  #     {"point10", ["3", "4", "5"]},
-  #     {"point11", ["1", "2", "6"]},
-  #     {"point12", ["1", "2", "7"]},
-  #     {"point13", ["1", "6", "7"]},
-  #     {"point14", ["2", "6", "7"]}
-  #   ] |> Utils.internalize_points
-  #   cluster1 =
-  #     points
-  #     |> Enum.at(0)
-  #     |> List.wrap
-  #     |> Cluster.new
-  #     |> Cluster.add_point(points |> Enum.at(2))
-  #   cluster2 =
-  #     points
-  #     |> List.delete_at(0)
-  #     |> List.delete_at(2)
-  #     |> Cluster.new
-  #   neighbour_criterion = NeighbourCriterion.new(0.5)
-  #   link_matrix = Links.matrix(points, neighbour_criterion) |> IO.inspect
+  test "counts number of cross links (example 2)" do
+    points = [
+      {"point1", ["1", "2", "3"]},
+      {"point2", ["1", "2", "4"]},
+      {"point3", ["1", "2", "5"]},
+      {"point4", ["1", "3", "4"]},
+      {"point5", ["1", "3", "5"]},
+      {"point6", ["1", "4", "5"]},
+      {"point7", ["2", "3", "4"]},
+      {"point8", ["2", "3", "5"]},
+      {"point9", ["2", "4", "5"]},
+      {"point10", ["3", "4", "5"]},
+      {"point11", ["1", "2", "6"]},
+      {"point12", ["1", "2", "7"]},
+      {"point13", ["1", "6", "7"]},
+      {"point14", ["2", "6", "7"]}
+    ]
+    |> Utils.internalize_points
+    cluster1 =
+      points
+      |> Enum.at(0)
+      |> List.wrap
+      |> Cluster.new
+      |> Cluster.add_point(points |> Enum.at(2))
+    cluster2 =
+      points
+      |> List.delete_at(0)
+      |> List.delete_at(1)
+      |> Cluster.new
+    neighbour_criterion = NeighbourCriterion.new(0.5)
+    link_matrix = Links.matrix(points, neighbour_criterion)
+    count = ClusterMergeCriterion.count_cross_links(link_matrix, cluster1, cluster2)
 
-  #   count = ClusterMergeCriterion.count_cross_links(link_matrix, cluster1, cluster2) |> IO.inspect
-
-  #   first_row =
-  #     link_matrix
-  #     |> Enum.at(0)
-  #     |> Enum.reduce(0, fn(x, acc) -> x + acc end) |> IO.inspect
-  #   expected_count =
-  #     link_matrix
-  #     |> Enum.at(2)
-  #     |> Enum.reduce(0, fn(x, acc) -> x + acc end) |> IO.inspect
-  #   ^count = expected_count
-  # end
+    first_row =
+      link_matrix
+      |> Enum.at(0)
+      |> Enum.reduce(0, fn(x, acc) -> x + acc end)
+    expected_count =
+      link_matrix
+      |> Enum.at(2)
+      |> Enum.reduce(first_row, fn(x, acc) -> x + acc end)
+    ^count = expected_count
+  end
 end
