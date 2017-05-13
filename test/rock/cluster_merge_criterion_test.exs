@@ -109,6 +109,6 @@ defmodule Rock.ClusterMergeCriterionTest do
 
     result =  ClusterMergeCriterion.measure(link_matrix, cluster1, cluster2, 0.5)
 
-    ^result = 6.9506352159723646
+    ^result = {6.9506352159723646, 106}
   end
  end

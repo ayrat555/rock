@@ -18,7 +18,8 @@ defmodule Rock.Mixfile do
 
   defp deps do
     [
-      {:credo, "~> 0.7", only: [:dev, :test]}
+      {:credo, "~> 0.7", only: [:dev, :test]},
+      {:uuid, "~> 1.1"}
     ]
   end
 

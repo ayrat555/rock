@@ -3,7 +3,7 @@ defmodule Rock.Links do
   alias Rock.Neighbours
 
   def matrix(points, neighbour_criterion)
-      when is_list(points)do
+      when is_list(points) do
     neighbour_lists =
       points
       |> Neighbours.list(neighbour_criterion)

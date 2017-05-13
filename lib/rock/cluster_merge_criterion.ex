@@ -2,17 +2,34 @@ defmodule Rock.ClusterMergeCriterion do
   alias Rock.Struct.Point
   alias Rock.Struct.Cluster
 
-  def measure(link_matrix,
-      %Cluster{points: points1, size: size1} = cluster1,
-      %Cluster{points: points2, size: size2} = cluster2,
-      theta) do
-    cross_link = count_cross_links(link_matrix, cluster1, cluster2)
+  def measure(
+      %Cluster{size: size1},
+      %Cluster{size: size2},
+      theta, cross_link_count) do
+
     power = 1 + 2 * f_theta(theta)
     summand1 = :math.pow(size1 + size2, power)
     summand2 = :math.pow(size1, power)
     summand3 = :math.pow(size2, power)
 
-    cross_link / (summand1 - summand2 - summand3)
+    measure = cross_link_count / (summand1 - summand2 - summand3)
+
+    measure
+  end
+
+  def measure(link_matrix,
+      %Cluster{size: size1} = cluster1,
+      %Cluster{size: size2} = cluster2,
+      theta) do
+    cross_link_count = count_cross_links(link_matrix, cluster1, cluster2)
+    power = 1 + 2 * f_theta(theta)
+    summand1 = :math.pow(size1 + size2, power)
+    summand2 = :math.pow(size1, power)
+    summand3 = :math.pow(size2, power)
+
+    measure = cross_link_count / (summand1 - summand2 - summand3)
+
+    {measure, cross_link_count}
   end
 
   def count_cross_links(link_matrix,
@@ -67,7 +84,7 @@ defmodule Rock.ClusterMergeCriterion do
     |> Enum.at(index2)
   end
 
-  def f_theta(theta) do
+  defp f_theta(theta) do
     (1 - theta) / (1 + theta)
   end
 end
