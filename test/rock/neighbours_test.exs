@@ -10,7 +10,7 @@ defmodule Rock.NeighboursTest do
     Point.new(["5", "6", "7"])
   ]
 
-  test "calculates neighbor matrix with jaccard coefficient" do
+  test "calculates neighbor matrix with jaccard coefficient (example 1)" do
     criterion = NeighbourCriterion.new(0.1)
 
     neighbor_matrix =
@@ -22,6 +22,46 @@ defmodule Rock.NeighboursTest do
       [1, 1, 0],
       [1, 0, 1]
     ]
+  end
+
+  test "calculates neighbor matrix with jaccard coefficient (example 2)" do
+    criterion = NeighbourCriterion.new(0.5)
+    points = [
+      Point.new(["1", "2", "3"]),
+      Point.new(["1", "2", "4"]),
+      Point.new(["1", "2", "5"]),
+      Point.new(["1", "3", "4"]),
+      Point.new(["1", "3", "5"]),
+      Point.new(["1", "4", "5"]),
+      Point.new(["2", "3", "4"]),
+      Point.new(["2", "3", "5"]),
+      Point.new(["2", "4", "5"]),
+      Point.new(["3", "4", "5"]),
+      Point.new(["1", "2", "6"]),
+      Point.new(["1", "2", "7"]),
+      Point.new(["1", "6", "7"]),
+      Point.new(["2", "6", "7"])
+    ]
+    neighbor_matrix =
+      points
+      |> Neighbours.matrix(criterion)
+
+    [
+      [1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0],
+      [1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0],
+      [1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0],
+      [1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0],
+      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0],
+      [0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0],
+      [1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+      [0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+      [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1]
+    ] = neighbor_matrix
   end
 
   test "calculates neighbor matrix with custom similarity function" do
