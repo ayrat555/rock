@@ -15,4 +15,16 @@ defmodule Rock.Struct.Cluster do
 
     %Cluster{points: new_points, size: size + 1}
   end
+
+  def merge(%Cluster{points: points1, size: size1},
+      %Cluster{points: points2, size: size2}) do
+    new_points = points1 ++ points2
+    new_size = size1 + size2
+
+    %Cluster{
+      points: new_points,
+      size: new_size,
+      uuid: UUID.uuid4
+    }
+  end
 end

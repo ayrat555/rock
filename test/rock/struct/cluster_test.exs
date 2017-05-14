@@ -20,4 +20,26 @@ defmodule Rock.Struct.ClusterTest do
       p == point
     end)
   end
+
+  test "merges two clusters" do
+    cluster1 = %Cluster{uuid: uuid1, points: points1}
+      = TestFactory.from_string(:cluster,
+      [
+        ["1", "2", "3"],
+        ["5", "7"]
+      ])
+    cluster2 = %Cluster{uuid: uuid2, points: points2}
+      = TestFactory.from_string(:cluster,
+      [
+        ["1", "2"],
+        ["5"]
+      ])
+
+    %Cluster{uuid: uuid3, points: new_points} =
+      Cluster.merge(cluster1, cluster2)
+
+    assert uuid3 != uuid1
+    assert uuid3 != uuid2
+    assert new_points == points1 ++ points2
+  end
 end
