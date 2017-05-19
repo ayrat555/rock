@@ -1,6 +1,7 @@
 defmodule Rock.Struct.Heap do
   defstruct cluster_uuid: nil, items: []
 
+  alias Rock.Struct.Cluster
   alias Rock.Struct.Heap
   alias Rock.ClusterMergeCriterion
 
@@ -25,8 +26,8 @@ defmodule Rock.Struct.Heap do
     |> Enum.map(&calculate_item(cluster, &1, link_matrix, theta) )
   end
 
-  defp calculate_item(cluster1,
-      cluster2 = %Cluster{uuid: uuid},
+  defp calculate_item(cluster,
+      other_cluster = %Cluster{uuid: uuid},
       link_matrix,
       theta) do
     {measure, cross_link_count} =
