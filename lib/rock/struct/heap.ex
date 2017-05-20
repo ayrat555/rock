@@ -9,6 +9,10 @@ defmodule Rock.Struct.Heap do
       other_clusters,
       link_matrix,
       theta) do
+
+    if other_clusters |> Enum.member?(cluster),
+      do: raise ArgumentError, message: "cluster can not be member of heap items clusters"
+
     items = cluster |> prepare_items(other_clusters, link_matrix, theta)
 
     %Heap{cluster_uuid: uuid, items: items}
@@ -30,6 +34,7 @@ defmodule Rock.Struct.Heap do
       other_cluster = %Cluster{uuid: uuid},
       link_matrix,
       theta) do
+
     {measure, cross_link_count} =
       link_matrix
       |> ClusterMergeCriterion.measure(cluster, other_cluster, theta)

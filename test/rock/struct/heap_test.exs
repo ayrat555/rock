@@ -5,7 +5,7 @@ defmodule Rock.Struct.HeapTest do
   alias Rock.Struct.Heap
   alias Rock.Struct.Cluster
 
-  test "initializs heap" do
+  test "initializes heap" do
     points = [
       Point.new("1", ["1", "2", "3"], 0),
       Point.new("2", ["1", "2", "4"], 1),
@@ -54,11 +54,11 @@ defmodule Rock.Struct.HeapTest do
     %Heap{cluster_uuid: ^cluster_uuid, items: items} = heap
     clusters
     |> Enum.each(fn(%Cluster{uuid: uuid}) ->
-      items
-      |> Enum.any?(fn({_, _, item_uuid}) ->
-        item_uuid == uuid
-      end)
+      assert items
+        |> Enum.any?(fn({_, _, item_uuid}) ->
+          item_uuid == uuid
+        end)
     end)
   end
 end
- 
+
