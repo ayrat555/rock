@@ -38,6 +38,11 @@ defmodule Rock.Struct.Heap do
     %Heap{cluster: heap_cluster, items: new_items}
   end
 
+  def find_item(%Heap{cluster: %Cluster{uuid: cluster_uuid},
+                      items: items}, uuid) when uuid == cluster_uuid do
+    nil
+  end
+
   def find_item(%Heap{items: items}, uuid) do
     items
     |> Enum.find(fn({_, _, cluster_uuid} = item) ->
@@ -56,8 +61,8 @@ defmodule Rock.Struct.Heap do
     items |> List.delete(item)
   end
 
-  defp _remove_item(_, [_, []], uuid) do
-    raise ArgumentError, message: "heap does not have the item with uuid #{uuid}"
+  defp _remove_item(items, [], uuid) do
+    items
   end
 
   defp _remove_item(items, [_item | tail], uuid) do

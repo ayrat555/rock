@@ -8,7 +8,7 @@ defmodule Rock.HeapsTest do
   alias Rock.Struct.Cluster
   alias Rock.Struct.Heap
 
-  test "initializes heap list" do
+  setup do
     theta = 0.5
     criterion = NeighbourCriterion.new(theta)
     points = [
@@ -33,12 +33,24 @@ defmodule Rock.HeapsTest do
     point_clusters =
       points
       |> Enum.chunk_by(fn(%Point{attributes: attrs}) ->
-        attrs |> Enum.at(0) == "1"
-      end)
+      attrs |> Enum.at(0) == "1"
+    end)
     clusters =
       point_clusters
       |> Enum.map(&Cluster.new(&1))
 
+    {
+      :ok,
+      [
+        clusters: clusters,
+        link_matrix: link_matrix,
+        theta: theta
+      ]
+    }
+  end
+
+  test "initializes heap list", %{clusters: clusters,
+                                  link_matrix: link_matrix, theta: theta} do
     heaps = clusters |> Heaps.initialize(link_matrix, theta)
 
     clusters
@@ -50,6 +62,20 @@ defmodule Rock.HeapsTest do
         end)
 
       assert exists
+    end)
+  end
+
+  test "updates heap list", %{clusters: clusters,
+                              link_matrix: link_matrix, theta: theta} do
+    heaps = clusters |> Heaps.initialize(link_matrix, theta)
+    cluster1 = %Cluster{uuid: uuid1} = clusters |> Enum.at(0)
+    cluster2 = %Cluster{uuid: uuid2} = clusters |> Enum.at(1)
+
+    new_heaps = heaps |> Heaps.update(cluster1, cluster2, theta)
+
+    assert Enum.count(heaps) == (Enum.count(new_heaps) + 2)
+    refute new_heaps |> Enum.any?(fn(%Heap{cluster: %Cluster{uuid: uuid}}) ->
+      (uuid == uuid1) || (uuid == uuid2)
     end)
   end
 end
