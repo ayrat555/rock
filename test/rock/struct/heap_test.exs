@@ -4,6 +4,7 @@ defmodule Rock.Struct.HeapTest do
   alias Rock.Struct.Point
   alias Rock.Struct.Heap
   alias Rock.Struct.Cluster
+  alias Rock.Test.TestFactory
 
   test "initializes heap" do
     points = [
@@ -59,6 +60,20 @@ defmodule Rock.Struct.HeapTest do
           item_uuid == uuid
         end)
     end)
+  end
+
+  test "deletes item from heap" do
+    items = [
+      {10, 15, UUID.uuid4},
+      item = {9, 14, uuid = UUID.uuid4},
+      {6, 12, UUID.uuid4},
+      {5, 10, UUID. uuid4}
+    ]
+    heap = TestFactory.create(:heap, items)
+
+    %Heap{items: new_items} = heap |> Heap.remove_item(uuid)
+
+    refute new_items |> Enum.member?(item)
   end
 end
 
