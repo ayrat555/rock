@@ -1,5 +1,4 @@
 defmodule Rock.Links do
-  alias Rock.JaccardCoefficient
   alias Rock.Neighbours
 
   def matrix(points, neighbour_criterion)

@@ -104,7 +104,7 @@ defmodule Rock.Struct.HeapTest do
     heap = cluster |> Heap.new(clusters, link_matrix, theta)
     cross_link_count = 10
 
-    new_heap = %Heap{items: items} =
+    %Heap{items: items} =
       heap
       |> Heap.add_item(new_cluster, cross_link_count, theta)
 

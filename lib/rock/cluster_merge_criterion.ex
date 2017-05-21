@@ -18,8 +18,8 @@ defmodule Rock.ClusterMergeCriterion do
   end
 
   def measure(link_matrix,
-      %Cluster{size: size1} = cluster1,
-      %Cluster{size: size2} = cluster2,
+      %Cluster{} = cluster1,
+      %Cluster{} = cluster2,
       theta) do
 
     cross_link_count = count_cross_links(link_matrix, cluster1, cluster2)
