@@ -6,7 +6,8 @@ defmodule Rock.Struct.HeapTest do
   alias Rock.Struct.Cluster
   alias Rock.Test.TestFactory
 
-  test "initializes heap" do
+
+  setup do
     points = [
       Point.new("1", ["1", "2", "3"], 0),
       Point.new("2", ["1", "2", "4"], 1),
@@ -47,12 +48,29 @@ defmodule Rock.Struct.HeapTest do
     clusters =
       point_clusters
       |> Enum.map(&Cluster.new(&1))
-    cluster = %Cluster{uuid: cluster_uuid} =  clusters |>  Enum.at(0)
+    cluster = clusters |>  Enum.at(0)
     clusters = clusters |> List.delete_at(0)
+
+    {
+      :ok,
+      [
+        cluster: cluster,
+        clusters: clusters,
+        link_matrix: link_matrix,
+        theta: theta
+      ]
+    }
+  end
+
+  test "initializes heap",
+      %{cluster: cluster = %Cluster{uuid: cluster_uuid},
+        clusters: clusters,
+        link_matrix: link_matrix,
+        theta: theta} do
 
     heap = cluster |> Heap.new(clusters, link_matrix, theta)
 
-    %Heap{cluster_uuid: ^cluster_uuid, items: items} = heap
+    %Heap{cluster: %Cluster{uuid: ^cluster_uuid}, items: items} = heap
     clusters
     |> Enum.each(fn(%Cluster{uuid: uuid}) ->
       assert items
@@ -74,6 +92,25 @@ defmodule Rock.Struct.HeapTest do
     %Heap{items: new_items} = heap |> Heap.remove_item(uuid)
 
     refute new_items |> Enum.member?(item)
+  end
+
+  test "adds new item to heap",
+      %{cluster: cluster,
+        clusters: clusters,
+        link_matrix: link_matrix,
+        theta: theta} do
+    new_cluster = %Cluster{uuid: uuid} =  clusters |> Enum.at(0)
+    clusters = clusters |> List.delete_at(0)
+    heap = cluster |> Heap.new(clusters, link_matrix, theta)
+    cross_link_count = 10
+
+    new_heap = %Heap{items: items} =
+      heap
+      |> Heap.add_item(new_cluster, cross_link_count, theta)
+
+    assert items |> Enum.any?(fn({_, _, cluster_uuid}) ->
+      cluster_uuid == uuid
+    end)
   end
 end
 

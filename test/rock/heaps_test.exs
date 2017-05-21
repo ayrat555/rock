@@ -45,7 +45,7 @@ defmodule Rock.HeapsTest do
     |> Enum.each(fn(%Cluster{uuid: uuid}) ->
       exists =
         heaps
-        |> Enum.map(fn(%Heap{cluster_uuid: cluster_uuid}) ->
+        |> Enum.map(fn(%Heap{cluster: %Cluster{uuid: cluster_uuid}}) ->
           cluster_uuid == uuid
         end)
 

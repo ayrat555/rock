@@ -1,11 +1,11 @@
 defmodule Rock.Struct.Heap do
-  defstruct cluster_uuid: nil, items: []
+  defstruct cluster: nil, items: []
 
   alias Rock.Struct.Cluster
   alias Rock.Struct.Heap
   alias Rock.ClusterMergeCriterion
 
-  def new(%Cluster{uuid: uuid} = cluster,
+  def new(%Cluster{} = cluster,
       other_clusters,
       link_matrix,
       theta) do
@@ -15,13 +15,34 @@ defmodule Rock.Struct.Heap do
 
     items = cluster |> prepare_items(other_clusters, link_matrix, theta)
 
-    %Heap{cluster_uuid: uuid, items: items}
+    %Heap{cluster: cluster, items: items}
   end
 
-  def remove_item(%Heap{items: items, cluster_uuid: cluster_uuid}, uuid) do
+  def remove_item(%Heap{items: items, cluster: cluster}, uuid) do
     new_items = items |> _remove_item(items, uuid)
 
-    %Heap{cluster_uuid: cluster_uuid, items: new_items}
+    %Heap{cluster: cluster, items: new_items}
+  end
+
+  def add_item(%Heap{items: items, cluster: heap_cluster},
+      %Cluster{uuid: uuid} = cluster,
+      cross_link_count,
+      theta) do
+
+    if uuid |> exists_in_items?(items),
+      do: raise ArgumentError, message: "cluster is already member of the heap"
+
+    new_item = heap_cluster |> calculate_item(cluster, theta, cross_link_count)
+    new_items = [new_item | items] |> sort
+
+    %Heap{cluster: heap_cluster, items: new_items}
+  end
+
+  defp exists_in_items?(uuid, items) do
+    items
+    |> Enum.any?(fn({_, _, cluster_uuid}) ->
+      cluster_uuid == uuid
+    end)
   end
 
   defp _remove_item(items, [{_, _, cluster_uuid} = item | _], uuid) when cluster_uuid == uuid do
@@ -46,6 +67,15 @@ defmodule Rock.Struct.Heap do
   defp calculate_items(clusters, cluster, link_matrix, theta) do
     clusters
     |> Enum.map(&calculate_item(cluster, &1, link_matrix, theta) )
+  end
+
+  defp calculate_item(cluster,
+      other_cluster = %Cluster{uuid: uuid},
+      cross_link_count,
+      theta) when is_number(cross_link_count) do
+    measure = ClusterMergeCriterion.measure(cluster, other_cluster, theta, cross_link_count)
+
+    {measure, cross_link_count, uuid}
   end
 
   defp calculate_item(cluster,

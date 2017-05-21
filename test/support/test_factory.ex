@@ -16,6 +16,6 @@ defmodule Rock.Test.TestFactory do
   end
 
   def create(:heap, items) do
-    %Heap{cluster_uuid: UUID.uuid4, items: items}
+    %Heap{cluster: %Cluster{uuid: UUID.uuid4}, items: items}
   end
 end

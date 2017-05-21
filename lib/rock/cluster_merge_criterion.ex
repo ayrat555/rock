@@ -21,13 +21,9 @@ defmodule Rock.ClusterMergeCriterion do
       %Cluster{size: size1} = cluster1,
       %Cluster{size: size2} = cluster2,
       theta) do
-    cross_link_count = count_cross_links(link_matrix, cluster1, cluster2)
-    power = 1 + 2 * f_theta(theta)
-    summand1 = :math.pow(size1 + size2, power)
-    summand2 = :math.pow(size1, power)
-    summand3 = :math.pow(size2, power)
 
-    measure = cross_link_count / (summand1 - summand2 - summand3)
+    cross_link_count = count_cross_links(link_matrix, cluster1, cluster2)
+    measure = measure(cluster1, cluster2, theta, cross_link_count)
 
     {measure, cross_link_count}
   end
