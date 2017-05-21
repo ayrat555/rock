@@ -71,9 +71,9 @@ defmodule Rock.HeapsTest do
     cluster1 = %Cluster{uuid: uuid1} = clusters |> Enum.at(0)
     cluster2 = %Cluster{uuid: uuid2} = clusters |> Enum.at(1)
 
-    new_heaps = heaps |> Heaps.update(cluster1, cluster2, theta)
+    {new_heaps, _cluster3} = heaps |> Heaps.update(cluster1, cluster2, theta)
 
-    assert Enum.count(heaps) == (Enum.count(new_heaps) + 2)
+    assert Enum.count(heaps) == (Enum.count(new_heaps) + 1)
     refute new_heaps |> Enum.any?(fn(%Heap{cluster: %Cluster{uuid: uuid}}) ->
       (uuid == uuid1) || (uuid == uuid2)
     end)

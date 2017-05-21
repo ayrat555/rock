@@ -18,7 +18,7 @@ defmodule Rock.Heaps do
       %Cluster{uuid: u_uuid} = u_cluster,
       theta) do
 
-    merged_cluster = v_cluster |> Cluster.merge(u_cluster)
+    w_cluster = v_cluster |> Cluster.merge(u_cluster)
 
     new_heaps =
       heaps
@@ -44,7 +44,7 @@ defmodule Rock.Heaps do
         if cross_link_count == 0 do
           heap
         else
-          heap |> Heap.add_item(merged_cluster, cross_link_count, theta)
+          heap |> Heap.add_item(w_cluster, cross_link_count, theta)
         end
       end)
 
@@ -52,12 +52,34 @@ defmodule Rock.Heaps do
       new_heaps
       |> remove_heap(v_uuid)
       |> remove_heap(u_uuid)
+
+    #need optimization, move to to heaps update ^
+    w_heap = new_heaps |> construct_w_heap(w_cluster)
+
+    {[w_heap | new_heaps], w_heap}
   end
 
-  def remove_heap(heaps, uuid) do
+  defp remove_heap(heaps, uuid) do
     heaps
     |> Enum.filter(fn(%Heap{cluster: %Cluster{uuid: cluster_uuid}}) ->
       uuid != cluster_uuid
     end)
+  end
+
+  defp construct_w_heap(heaps, %Cluster{uuid: w_uuid} = w_cluster) do
+    items =
+      heaps
+      |> Enum.map(fn(%Heap{cluster: %Cluster{uuid: uuid}} = heap) ->
+        item = heap |> Heap.find_item(w_uuid)
+        {uuid, item}
+      end)
+      |> Enum.filter(fn({_, item}) ->
+        item != nil
+      end)
+      |> Enum.map(fn({uuid, {measure, cross_link_count, _}}) ->
+        {measure, cross_link_count, uuid}
+      end)
+
+    %Heap{cluster: w_cluster, items: items}
   end
 end
