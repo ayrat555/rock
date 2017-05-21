@@ -85,7 +85,7 @@ defmodule Rock.Struct.HeapTest do
       {10, 15, UUID.uuid4},
       item = {9, 14, uuid = UUID.uuid4},
       {6, 12, UUID.uuid4},
-      {5, 10, UUID. uuid4}
+      {5, 10, UUID.uuid4}
     ]
     heap = TestFactory.create(:heap, items)
 
@@ -111,6 +111,19 @@ defmodule Rock.Struct.HeapTest do
     assert items |> Enum.any?(fn({_, _, cluster_uuid}) ->
       cluster_uuid == uuid
     end)
+  end
+
+  test "finds item in heap",
+      %{cluster: cluster,
+        clusters: clusters,
+        link_matrix: link_matrix,
+        theta: theta} do
+    %Cluster{uuid: uuid} = clusters |> Enum.at(0)
+    heap = cluster |> Heap.new(clusters, link_matrix, theta)
+
+    item = heap |> Heap.find_item(uuid)
+
+    assert item
   end
 end
 

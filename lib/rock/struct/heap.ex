@@ -38,6 +38,13 @@ defmodule Rock.Struct.Heap do
     %Heap{cluster: heap_cluster, items: new_items}
   end
 
+  def find_item(%Heap{items: items}, uuid) do
+    items
+    |> Enum.find(fn({_, _, cluster_uuid} = item) ->
+      cluster_uuid == uuid
+    end)
+  end
+
   defp exists_in_items?(uuid, items) do
     items
     |> Enum.any?(fn({_, _, cluster_uuid}) ->
