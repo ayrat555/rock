@@ -44,7 +44,9 @@ defmodule Rock.Heaps do
         if cross_link_count == 0 do
           heap
         else
-          heap |> Heap.add_item(w_cluster, cross_link_count, theta)
+          heap
+          |> Heap.add_item(w_cluster, cross_link_count, theta)
+          |> Heap.sort_items
         end
       end)
 
@@ -57,6 +59,18 @@ defmodule Rock.Heaps do
     w_heap = new_heaps |> construct_w_heap(w_cluster)
 
     {[w_heap | new_heaps], w_heap}
+  end
+
+  def global_heap(heaps) do
+    heaps
+    |> Enum.map(fn(%Heap{items: items, cluster: %Cluster{uuid: uuid}}) ->
+      {measure, cross_link_count, cluster_uuid} = items |> Enum.at(0)
+
+      {measure, cross_link_count, uuid, cluster_uuid}
+    end)
+    |> Enum.sort_by(fn({measure, _, _, _}) ->
+      - measure
+    end)
   end
 
   defp remove_heap(heaps, uuid) do
@@ -80,6 +94,6 @@ defmodule Rock.Heaps do
         {measure, cross_link_count, uuid}
       end)
 
-    %Heap{cluster: w_cluster, items: items}
+    %Heap{cluster: w_cluster, items: items} |> Heap.sort_items
   end
 end

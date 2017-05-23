@@ -50,6 +50,12 @@ defmodule Rock.Struct.Heap do
     end)
   end
 
+  def sort_items(%Heap{cluster: cluster, items: items}) do
+    new_items = items |> sort
+
+    %Heap{cluster: cluster, items: new_items}
+  end
+
   defp exists_in_items?(uuid, items) do
     items
     |> Enum.any?(fn({_, _, cluster_uuid}) ->

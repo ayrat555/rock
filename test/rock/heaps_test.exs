@@ -78,4 +78,18 @@ defmodule Rock.HeapsTest do
       (uuid == uuid1) || (uuid == uuid2)
     end)
   end
+
+  test "creates global heap from heap list", %{clusters: clusters,
+                                               link_matrix: link_matrix, theta: theta} do
+    heaps = clusters |> Heaps.initialize(link_matrix, theta)
+
+    global_heap = heaps |> Heaps.global_heap
+
+    clusters
+    |> Enum.each(fn(%Cluster{uuid: uuid}) ->
+      assert global_heap |> Enum.any?(fn({_, _, cluster_uuid, _}) ->
+        uuid == cluster_uuid
+      end)
+    end)
+  end
 end
