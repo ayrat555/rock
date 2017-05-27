@@ -1,4 +1,6 @@
 defmodule Rock.Neighbours do
+  @moduledoc false
+
   def list(points, neighbour_criterion) when is_list(points) do
     points
     |> matrix(neighbour_criterion)

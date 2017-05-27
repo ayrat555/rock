@@ -1,6 +1,7 @@
 defmodule Rock.Utils do
   alias Rock.Struct.Point
   alias Rock.Struct.Cluster
+  @moduledoc false
 
   def internalize_points(points) when is_list(points) do
     points

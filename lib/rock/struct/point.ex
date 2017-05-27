@@ -2,6 +2,7 @@ defmodule Rock.Struct.Point do
   defstruct attributes: [], name: nil, index: nil
 
   alias Rock.Struct.Point
+  @moduledoc false
 
   def new(name, attributes, index) when is_list(attributes) do
     attributes = MapSet.new(attributes)
@@ -33,7 +34,9 @@ defmodule Rock.Struct.Point do
     attributes |> Enum.count
   end
 
-  def to_list(%Point{attributes: attributes}) do
-    attributes |> MapSet.to_list
+  def to_list(%Point{attributes: attributes, name: name}) do
+    attr_list = attributes |> MapSet.to_list
+
+    {name, attr_list}
   end
 end

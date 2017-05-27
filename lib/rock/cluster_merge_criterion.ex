@@ -1,12 +1,12 @@
 defmodule Rock.ClusterMergeCriterion do
   alias Rock.Struct.Point
   alias Rock.Struct.Cluster
+  @moduledoc false
 
   def measure(
       %Cluster{size: size1},
       %Cluster{size: size2},
       theta, cross_link_count) do
-
     power = 1 + 2 * f_theta(theta)
     summand1 = :math.pow(size1 + size2, power)
     summand2 = :math.pow(size1, power)

@@ -1,6 +1,7 @@
 defmodule Rock.Heaps do
   alias Rock.Struct.Heap
   alias Rock.Struct.Cluster
+  @moduledoc false
 
   def initialize(clusters, link_matrix, theta) do
     clusters

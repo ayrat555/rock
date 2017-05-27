@@ -3,6 +3,7 @@ defmodule Rock.Algorithm do
   alias Rock.NeighbourCriterion
   alias Rock.Links
   alias Rock.Heaps
+  @moduledoc false
 
   def clusterize(points, number_of_clusters, theta, similarity_function \\ nil) when is_list(points) do
     neighbour_criterion = if is_nil(similarity_function) do
@@ -37,7 +38,7 @@ defmodule Rock.Algorithm do
   defp optimize_clusters(_, _, _, necessary_number, current_number)
       when necessary_number > current_number do
 
-    raise ArgumentError, message: "Needed number of clusters must be smaller than number of points"
+    raise ArgumentError, message: "Needed number of clusters must be smaller than the number of points"
   end
 
   defp optimize_clusters(_, clusters, _, necessary_number, current_number)

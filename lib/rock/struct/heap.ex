@@ -4,6 +4,7 @@ defmodule Rock.Struct.Heap do
   alias Rock.Struct.Cluster
   alias Rock.Struct.Heap
   alias Rock.ClusterMergeCriterion
+  @moduledoc false
 
   def new(%Cluster{} = cluster,
       other_clusters,

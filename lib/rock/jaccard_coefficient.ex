@@ -1,5 +1,6 @@
 defmodule Rock.JaccardCoefficient do
   alias Rock.Struct.Point
+  @moduledoc false
 
   def measure(%Point{} = point1, %Point{} = point2) do
     intersection_count(point1, point2) / union_count(point1, point2)

@@ -3,6 +3,7 @@ defmodule Rock.Struct.Cluster do
 
   alias Rock.Struct.Cluster
   alias Rock.Struct.Point
+  @moduledoc false
 
   def new(points) when is_list(points) do
     size = points |> Enum.count

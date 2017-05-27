@@ -1,5 +1,6 @@
 defmodule Rock.Links do
   alias Rock.Neighbours
+  @moduledoc false
 
   def matrix(points, neighbour_criterion)
       when is_list(points) do

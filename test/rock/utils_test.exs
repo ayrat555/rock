@@ -25,7 +25,7 @@ defmodule Rock.UtilsTest do
         (name == n) && (MapSet.new(attrs) == attributes)
       end)
       ^index = count
-      
+
       count + 1
     end)
   end

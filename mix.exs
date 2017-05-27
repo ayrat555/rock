@@ -20,7 +20,8 @@ defmodule Rock.Mixfile do
     [
       {:credo, "~> 0.7", only: [:dev, :test]},
       {:uuid, "~> 1.1"},
-      {:apex, "~> 1.0.0", only: [:dev, :test]}
+      {:apex, "~> 1.0.0", only: [:dev, :test]},
+      {:ex_doc, "~> 0.14", only: :dev, runtime: false}
     ]
   end
 

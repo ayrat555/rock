@@ -1,6 +1,7 @@
 defmodule Rock.NeighbourCriterion do
   alias Rock.Struct.Point
   alias Rock.JaccardCoefficient
+  @moduledoc false
 
   def new(theta,
       similarity_function \\ &JaccardCoefficient.measure/2) do
