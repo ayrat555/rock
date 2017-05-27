@@ -2,11 +2,15 @@ defmodule Rock.Algorithm do
   alias Rock.Struct.Cluster
   alias Rock.NeighbourCriterion
   alias Rock.Links
-  alias Rock.ClusterMergeCriterion
   alias Rock.Heaps
 
-  def clusterize(points, number_of_clusters, theta) when is_list(points) do
-    neighbour_criterion = theta |> NeighbourCriterion.new
+  def clusterize(points, number_of_clusters, theta, similarity_function \\ nil) when is_list(points) do
+    neighbour_criterion = if is_nil(similarity_function) do
+        theta |> NeighbourCriterion.new
+      else
+        theta |> NeighbourCriterion.new(similarity_function)
+      end
+
     link_matrix = points |> Links.matrix(neighbour_criterion)
     initial_clusters = points |> initialize_clusters
     current_number_of_clusters = points |> Enum.count
@@ -30,6 +34,12 @@ defmodule Rock.Algorithm do
     end)
   end
 
+  defp optimize_clusters(_, _, _, necessary_number, current_number)
+      when necessary_number > current_number do
+
+    raise ArgumentError, message: "Needed number of clusters must be smaller than number of points"
+  end
+
   defp optimize_clusters(_, clusters, _, necessary_number, current_number)
       when necessary_number == current_number do
     clusters
@@ -39,7 +49,7 @@ defmodule Rock.Algorithm do
     global_heap = local_heaps |> Heaps.global_heap
     {_, _, v_uuid, u_uuid} = global_heap |> Enum.at(0)
     v_cluster = clusters |> find_cluster(v_uuid)
-    u_cluster = clusters  |> find_cluster(u_uuid)
+    u_cluster = clusters |> find_cluster(u_uuid)
 
     {new_local_heap, new_cluster} =
       local_heaps
