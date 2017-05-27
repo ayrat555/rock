@@ -32,4 +32,8 @@ defmodule Rock.Struct.Point do
   def attribute_size(%Point{attributes: attributes}) do
     attributes |> Enum.count
   end
+
+  def to_list(%Point{attributes: attributes}) do
+    attributes |> MapSet.to_list
+  end
 end

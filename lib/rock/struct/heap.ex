@@ -32,7 +32,7 @@ defmodule Rock.Struct.Heap do
     if uuid |> exists_in_items?(items),
       do: raise ArgumentError, message: "cluster is already member of the heap"
 
-    new_item = heap_cluster |> calculate_item(cluster, theta, cross_link_count)
+    new_item = heap_cluster |> calculate_item(cluster, cross_link_count, theta)
     new_items = [new_item | items] |> sort
 
     %Heap{cluster: heap_cluster, items: new_items}
@@ -92,6 +92,7 @@ defmodule Rock.Struct.Heap do
       other_cluster = %Cluster{uuid: uuid},
       cross_link_count,
       theta) when is_number(cross_link_count) do
+
     measure =
       ClusterMergeCriterion.measure(
         cluster,

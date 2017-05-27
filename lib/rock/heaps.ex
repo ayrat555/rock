@@ -39,7 +39,7 @@ defmodule Rock.Heaps do
         heap =
           heap
           |> Heap.remove_item(v_uuid)
-          |> Heap.remove_item(u_item)
+          |> Heap.remove_item(u_uuid)
 
         if cross_link_count == 0 do
           heap
@@ -55,10 +55,10 @@ defmodule Rock.Heaps do
       |> remove_heap(v_uuid)
       |> remove_heap(u_uuid)
 
-    #need optimization, move to to heaps update ^
+    #need optimization, move  to heaps update ^
     w_heap = new_heaps |> construct_w_heap(w_cluster)
 
-    {[w_heap | new_heaps], w_heap}
+    {[w_heap | new_heaps], w_cluster}
   end
 
   def global_heap(heaps) do
