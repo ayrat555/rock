@@ -5,6 +5,12 @@ defmodule Rock.Mixfile do
     [app: :rock,
      version: "0.1.0",
      elixir: "~> 1.4",
+     description: "ROCK: A Robust Clustering Algorithm for Categorical Attributes",
+     package: [
+       maintainers: ["Ayrat Badykov"],
+       licenses: ["MIT"],
+       links: %{"GitHub" => "https://github.com/ayrat555/rock"}
+     ],
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
