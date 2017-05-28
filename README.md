@@ -15,6 +15,7 @@ Add `:rock` as a dependency to your project's `mix.exs`:
 defp deps do
   [
     {:rock, "~> 0.1.0"}
+  ]
 end
 ```
 
@@ -24,7 +25,7 @@ And run:
 
 ## Basic Usage
 
-To clusterize points using the Rock algorithm use should use Rock.clusterize/4 with the provided arguments:
+To clusterize points using the Rock algorithm you should use Rock.clusterize/4 with the arguments:
 
   * `points`, points that will be clusterized
   * `number_of_clusters`, the number of desired clusters.
