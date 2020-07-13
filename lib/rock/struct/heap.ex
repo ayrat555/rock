@@ -6,13 +6,14 @@ defmodule Rock.Struct.Heap do
   alias Rock.ClusterMergeCriterion
   @moduledoc false
 
-  def new(%Cluster{} = cluster,
-      other_clusters,
-      link_matrix,
-      theta) do
-
+  def new(
+        %Cluster{} = cluster,
+        other_clusters,
+        link_matrix,
+        theta
+      ) do
     if other_clusters |> Enum.member?(cluster),
-      do: raise ArgumentError, message: "cluster can not be member of heap items clusters"
+      do: raise(ArgumentError, message: "cluster can not be member of heap items clusters")
 
     items = cluster |> prepare_items(other_clusters, link_matrix, theta)
 
@@ -25,13 +26,14 @@ defmodule Rock.Struct.Heap do
     %Heap{cluster: cluster, items: new_items}
   end
 
-  def add_item(%Heap{items: items, cluster: heap_cluster},
-      %Cluster{uuid: uuid} = cluster,
-      cross_link_count,
-      theta) do
-
+  def add_item(
+        %Heap{items: items, cluster: heap_cluster},
+        %Cluster{uuid: uuid} = cluster,
+        cross_link_count,
+        theta
+      ) do
     if uuid |> exists_in_items?(items),
-      do: raise ArgumentError, message: "cluster is already member of the heap"
+      do: raise(ArgumentError, message: "cluster is already member of the heap")
 
     new_item = heap_cluster |> calculate_item(cluster, cross_link_count, theta)
     new_items = [new_item | items] |> sort
@@ -39,14 +41,17 @@ defmodule Rock.Struct.Heap do
     %Heap{cluster: heap_cluster, items: new_items}
   end
 
-  def find_item(%Heap{cluster: %Cluster{uuid: cluster_uuid}},
-                      uuid) when uuid == cluster_uuid do
+  def find_item(
+        %Heap{cluster: %Cluster{uuid: cluster_uuid}},
+        uuid
+      )
+      when uuid == cluster_uuid do
     nil
   end
 
   def find_item(%Heap{items: items}, uuid) do
     items
-    |> Enum.find(fn({_, _, cluster_uuid}) ->
+    |> Enum.find(fn {_, _, cluster_uuid} ->
       cluster_uuid == uuid
     end)
   end
@@ -59,13 +64,12 @@ defmodule Rock.Struct.Heap do
 
   defp exists_in_items?(uuid, items) do
     items
-    |> Enum.any?(fn({_, _, cluster_uuid}) ->
+    |> Enum.any?(fn {_, _, cluster_uuid} ->
       cluster_uuid == uuid
     end)
   end
 
-  defp _remove_item(items,
-    [{_, _, cluster_uuid} = item | _], uuid) when cluster_uuid == uuid do
+  defp _remove_item(items, [{_, _, cluster_uuid} = item | _], uuid) when cluster_uuid == uuid do
     items |> List.delete(item)
   end
 
@@ -89,11 +93,13 @@ defmodule Rock.Struct.Heap do
     |> Enum.map(&calculate_item(cluster, &1, link_matrix, theta))
   end
 
-  defp calculate_item(cluster,
-      other_cluster = %Cluster{uuid: uuid},
-      cross_link_count,
-      theta) when is_number(cross_link_count) do
-
+  defp calculate_item(
+         cluster,
+         %Cluster{uuid: uuid} = other_cluster,
+         cross_link_count,
+         theta
+       )
+       when is_number(cross_link_count) do
     measure =
       ClusterMergeCriterion.measure(
         cluster,
@@ -105,11 +111,12 @@ defmodule Rock.Struct.Heap do
     {measure, cross_link_count, uuid}
   end
 
-  defp calculate_item(cluster,
-      other_cluster = %Cluster{uuid: uuid},
-      link_matrix,
-      theta) do
-
+  defp calculate_item(
+         cluster,
+         %Cluster{uuid: uuid} = other_cluster,
+         link_matrix,
+         theta
+       ) do
     {measure, cross_link_count} =
       link_matrix
       |> ClusterMergeCriterion.measure(cluster, other_cluster, theta)
@@ -119,15 +126,15 @@ defmodule Rock.Struct.Heap do
 
   defp remove_empty_links(items) do
     items
-    |> Enum.filter(fn({_, cross_link_count, _}) ->
+    |> Enum.filter(fn {_, cross_link_count, _} ->
       cross_link_count != 0
     end)
   end
 
   defp sort(items) do
     items
-    |> Enum.sort_by(fn({measure, _, _}) ->
-      - measure
+    |> Enum.sort_by(fn {measure, _, _} ->
+      -measure
     end)
   end
 end

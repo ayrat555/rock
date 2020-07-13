@@ -1,4 +1,6 @@
 defmodule Rock.Test.TestFactory do
+  @moduledoc false
+
   alias Rock.Struct.Point
   alias Rock.Struct.Cluster
   alias Rock.Struct.Heap
