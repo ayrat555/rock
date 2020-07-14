@@ -16,26 +16,30 @@ defmodule Rock.Struct.Point do
     %Point{attributes: attributes}
   end
 
-  def intersection(%Point{attributes: attributes1},
-      %Point{attributes: attributes2}) do
+  def intersection(
+        %Point{attributes: attributes1},
+        %Point{attributes: attributes2}
+      ) do
     attributes1
     |> MapSet.intersection(attributes2)
-    |> MapSet.to_list
+    |> MapSet.to_list()
   end
 
-  def union(%Point{attributes: attributes1},
-      %Point{attributes: attributes2}) do
+  def union(
+        %Point{attributes: attributes1},
+        %Point{attributes: attributes2}
+      ) do
     attributes1
     |> MapSet.union(attributes2)
-    |> MapSet.to_list
+    |> MapSet.to_list()
   end
 
   def attribute_size(%Point{attributes: attributes}) do
-    attributes |> Enum.count
+    attributes |> Enum.count()
   end
 
   def to_list(%Point{attributes: attributes, name: name}) do
-    attr_list = attributes |> MapSet.to_list
+    attr_list = attributes |> MapSet.to_list()
 
     {name, attr_list}
   end

@@ -1,6 +1,7 @@
 defmodule Rock do
   alias Rock.Utils
   alias Rock.Algorithm
+
   @moduledoc """
   ROCK: A Robust Clustering Algorithm for Categorical Attributes
   """
@@ -108,10 +109,9 @@ defmodule Rock do
       when is_number(number_of_clusters)
       when is_number(theta)
       when is_function(similarity_function) do
-
     points
-    |> Utils.internalize_points
+    |> Utils.internalize_points()
     |> Algorithm.clusterize(number_of_clusters, theta, similarity_function)
-    |> Utils.externalize_clusters
+    |> Utils.externalize_clusters()
   end
 end

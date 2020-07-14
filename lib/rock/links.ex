@@ -9,16 +9,16 @@ defmodule Rock.Links do
       |> Neighbours.list(neighbour_criterion)
 
     points
-    |> Enum.count
+    |> Enum.count()
     |> initialize_links
     |> link_matrix(neighbour_lists)
   end
 
   defp initialize_links(size) do
     1..size
-    |> Enum.map(fn(_) ->
+    |> Enum.map(fn _ ->
       1..size
-      |> Enum.map(fn(_) ->
+      |> Enum.map(fn _ ->
         0
       end)
     end)
@@ -58,9 +58,9 @@ defmodule Rock.Links do
 
   defp add_link(link_matrix, row_index, column_index) do
     link_matrix
-    |> List.update_at(row_index, fn(row) ->
+    |> List.update_at(row_index, fn row ->
       row
-      |> List.update_at(column_index,  &(&1 + 1))
+      |> List.update_at(column_index, &(&1 + 1))
     end)
   end
 end

@@ -23,7 +23,7 @@ defmodule Rock.Struct.PointTest do
   test "calculates attribute size of a point" do
     point = Point.new(["1", "2", "3", "4"])
 
-    attribute_size = point |> Point.attribute_size
+    attribute_size = point |> Point.attribute_size()
 
     ^attribute_size = 4
   end

@@ -11,13 +11,11 @@ defmodule Rock.NeighbourCriterionTest do
     assert criterion.(point1, point2) == 1
   end
 
-
   test "check if points are neighbours with custom similarity function" do
-    similarity_function = fn(
-      %Point{attributes: attributes1},
-      %Point{attributes: attributes2}) ->
-        Enum.count(attributes1) * Enum.count(attributes2)
+    similarity_function = fn %Point{attributes: attributes1}, %Point{attributes: attributes2} ->
+      Enum.count(attributes1) * Enum.count(attributes2)
     end
+
     point1 = Point.new(["1", "2", "5"])
     point2 = Point.new(["1", "5", "6"])
 

@@ -11,19 +11,15 @@ defmodule Rock.UtilsTest do
       {"point3", ["5", "8", "8"]}
     ]
 
-    points = external_input |> Utils.internalize_points
+    points = external_input |> Utils.internalize_points()
 
     points
-    |> Enum.reduce(0, fn(
-      %Point{
-        attributes: attributes,
-        index: index,
-        name: name},
-      count) ->
+    |> Enum.reduce(0, fn %Point{attributes: attributes, index: index, name: name}, count ->
+      assert external_input
+             |> Enum.any?(fn {n, attrs} ->
+               name == n && MapSet.new(attrs) == attributes
+             end)
 
-      assert external_input |> Enum.any?(fn({n, attrs}) ->
-        (name == n) && (MapSet.new(attrs) == attributes)
-      end)
       ^index = count
 
       count + 1

@@ -9,12 +9,12 @@ defmodule Rock.JaccardCoefficient do
   defp union_count(point1, point2) do
     point1
     |> Point.union(point2)
-    |> Enum.count
+    |> Enum.count()
   end
 
   defp intersection_count(point1, point2) do
     point1
     |> Point.intersection(point2)
-    |> Enum.count
+    |> Enum.count()
   end
 end
