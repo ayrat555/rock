@@ -14,7 +14,7 @@ Add `:rock` as a dependency to your project's `mix.exs`:
 ```elixir
 defp deps do
   [
-    {:rock, "~> 0.1.0"}
+    {:rock, "~> 0.1.2"}
   ]
 end
 ```

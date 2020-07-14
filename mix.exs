@@ -6,7 +6,7 @@ defmodule Rock.Mixfile do
   def project do
     [
       app: :rock,
-      version: "0.1.1",
+      version: "0.1.2",
       elixir: "~> 1.4",
       description: "ROCK: A Robust Clustering Algorithm for Categorical Attributes",
       package: [
